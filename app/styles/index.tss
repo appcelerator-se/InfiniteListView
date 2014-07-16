@@ -1,0 +1,79 @@
+".container": {
+	backgroundColor:"white"
+},
+".top":{
+	top:20
+},
+
+".left":{
+	left:10
+},
+
+".right":{
+	right:10
+}
+
+".vgroup":{
+	layout:'vertical',
+},
+
+".hgroup":{
+	layout:'horizontal'
+},
+
+".size":{
+	height: Ti.UI.SIZE,
+	width: Ti.UI.SIZE
+},
+
+".grey-line":{
+	height: 1,
+	backgroundColor: "#666",
+	top: 20,
+}
+
+"ListView":{
+	backgroundColor: "#ececec"
+}
+
+"#adminLabel":{
+	font:{
+		fontSize: 10,
+		fontFamily:"FontAwesome",
+	},
+	color:"#038BC8",
+	right: 10,
+	top:5
+},
+
+"#userName":{
+	font:{
+		fontSize: 18
+	},
+	left: 85,
+	color: "#444"
+},
+
+"#userEmail":{
+	font:{
+		fontSize: 14
+	},
+	left: 85,
+	height: 20,
+	color: "#666"
+},
+
+"#userTemplate":{
+	height: 100,
+	width: Ti.UI.FILL
+}
+
+"#userPhoto":{
+	border: 1,
+	borderColor: "#acacac",
+	height: 75,
+	width: Ti.UI.SIZE,
+	top: 12,
+	left: 0,
+	borderRadius: 35
+}
