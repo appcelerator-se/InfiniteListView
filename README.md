@@ -4,6 +4,8 @@ This project illustrates how you can use the [Titanium.UI.ListView](http://docs.
 
 *A big thanks to [Thomas Wilkinson](https://github.com/thomasdelbert) for his excellent right up and examples entiteld [Elements of ListView](https://github.com/appcelerator-services/ElementsOfListView) on Appcelerator ListViews from which this simplified example was produced*
 
+Images are provided by [LoremPixel](http://lorempixel.com/).
+
 ## Overview
 Almost every app at some point will need to list data in a table. Sometimes that data set can be VERY big - but loading all the data at once can be taxing, and not really optimal for app performance. To address this issue, app developers leverage a technique of dynamically loading data into the list as the user scrolls down or reaches the end of the list. 
 
