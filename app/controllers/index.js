@@ -9,7 +9,7 @@ var allLoaded = false;
 function addData(){ 
 	var json = loadFile('userData/'+dataSources.shift());
 	if(json !== -1){
-		var newUsers = JSON.parse(loadFile('userData/'+dataSources.shift())).users;
+		var newUsers = JSON.parse(json).users;
 	
 		if(newUsers) {
 			var dataToAdd = preprocessForListView(newUsers);
@@ -33,7 +33,7 @@ var preprocessForListView = function(rawData) {
 				itemId: item.guid
 			},
 			userName: {text: item.name},
-			userPhoto: {image: item.picture+"?t=" + new Date().getTime()},
+			userPhoto: {image: item.picture+"/img"+Math.floor(Math.random()*100)},
 			userEmail: {text: item.email}
 		};
 	});	
@@ -85,10 +85,5 @@ function loadFile(filename) {
  * Open the Window
  */
 $.index.open();
-
-// let the class start before adding items.
-setTimeout(function() {
-	// the initial data load
-	addData();
-	$.listView.setMarker({sectionIndex:0,itemIndex:15});
-},0);
+addData();
+$.listView.setMarker({sectionIndex:0,itemIndex:15});

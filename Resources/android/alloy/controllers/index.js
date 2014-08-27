@@ -1,33 +1,53 @@
+function __processArg(obj, key) {
+    var arg = null;
+    if (obj) {
+        arg = obj[key] || null;
+        delete obj[key];
+    }
+    return arg;
+}
+
 function Controller() {
     function addData() {
-        var newUsers = JSON.parse(loadFile("userData/" + dataSources.shift())).users;
-        if (newUsers) {
-            var dataToAdd = preprocessForListView(newUsers);
-            Ti.API.debug(JSON.stringify(dataToAdd));
-            var animationStyle = null;
-            $.listView.sections[0].appendItems(dataToAdd, animationStyle);
+        var json = loadFile("userData/" + dataSources.shift());
+        if (-1 !== json) {
+            var newUsers = JSON.parse(json).users;
+            if (newUsers) {
+                var dataToAdd = preprocessForListView(newUsers);
+                Ti.API.debug(JSON.stringify(dataToAdd));
+                var animationStyle = null;
+                $.listView.sections[0].appendItems(dataToAdd, animationStyle);
+            }
         }
     }
     function onItemClick() {
         alert("Item clicked");
     }
     function onMarkerEvent() {
-        addData();
-        $.listView.setMarker({
-            sectionIndex: 0,
-            itemIndex: $.listView.sections[0].items.length - 10
-        });
+        if (!allLoaded) {
+            addData();
+            $.listView.setMarker({
+                sectionIndex: 0,
+                itemIndex: $.listView.sections[0].items.length - 10
+            });
+        }
     }
     function loadFile(filename) {
         var file = Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory + filename);
-        var result = file.read().text;
-        return result;
+        if (file.exists()) {
+            var result = file.read().text;
+            return result;
+        }
+        allLoaded = true;
+        return -1;
     }
     require("alloy/controllers/BaseController").apply(this, Array.prototype.slice.call(arguments));
     this.__controllerPath = "index";
-    arguments[0] ? arguments[0]["__parentSymbol"] : null;
-    arguments[0] ? arguments[0]["$model"] : null;
-    arguments[0] ? arguments[0]["__itemTemplate"] : null;
+    if (arguments[0]) {
+        __processArg(arguments[0], "__parentSymbol");
+        __processArg(arguments[0], "$model");
+        __processArg(arguments[0], "__itemTemplate");
+    }
     var $ = this;
     var exports = {};
     var __defers = {};
@@ -144,6 +164,7 @@ function Controller() {
     exports.destroy = function() {};
     _.extend($, $.__views);
     var dataSources = [ "data0.json", "data1.json", "data2.json", "data3.json", "data4.json" ];
+    var allLoaded = false;
     var preprocessForListView = function(rawData) {
         return _.map(rawData, function(item) {
             return {
@@ -155,7 +176,7 @@ function Controller() {
                     text: item.name
                 },
                 userPhoto: {
-                    image: item.picture + "?t=" + new Date().getTime()
+                    image: item.picture + "/img" + Math.floor(100 * Math.random())
                 },
                 userEmail: {
                     text: item.email
@@ -164,13 +185,11 @@ function Controller() {
         });
     };
     $.index.open();
-    setTimeout(function() {
-        addData();
-        $.listView.setMarker({
-            sectionIndex: 0,
-            itemIndex: 15
-        });
-    }, 0);
+    addData();
+    $.listView.setMarker({
+        sectionIndex: 0,
+        itemIndex: 15
+    });
     __defers["$.__views.listView!itemclick!onItemClick"] && $.__views.listView.addEventListener("itemclick", onItemClick);
     __defers["$.__views.listView!marker!onMarkerEvent"] && $.__views.listView.addEventListener("marker", onMarkerEvent);
     _.extend($, exports);

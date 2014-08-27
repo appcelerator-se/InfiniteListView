@@ -2,7 +2,7 @@ function Controller() {
     function addData() {
         var json = loadFile("userData/" + dataSources.shift());
         if (-1 !== json) {
-            var newUsers = JSON.parse(loadFile("userData/" + dataSources.shift())).users;
+            var newUsers = JSON.parse(json).users;
             if (newUsers) {
                 var dataToAdd = preprocessForListView(newUsers);
                 Ti.API.debug(JSON.stringify(dataToAdd));
@@ -165,7 +165,7 @@ function Controller() {
                     text: item.name
                 },
                 userPhoto: {
-                    image: item.picture + "?t=" + new Date().getTime()
+                    image: item.picture + "/img" + Math.floor(100 * Math.random())
                 },
                 userEmail: {
                     text: item.email
@@ -174,13 +174,11 @@ function Controller() {
         });
     };
     $.index.open();
-    setTimeout(function() {
-        addData();
-        $.listView.setMarker({
-            sectionIndex: 0,
-            itemIndex: 15
-        });
-    }, 0);
+    addData();
+    $.listView.setMarker({
+        sectionIndex: 0,
+        itemIndex: 15
+    });
     __defers["$.__views.listView!itemclick!onItemClick"] && $.__views.listView.addEventListener("itemclick", onItemClick);
     __defers["$.__views.listView!marker!onMarkerEvent"] && $.__views.listView.addEventListener("marker", onMarkerEvent);
     _.extend($, exports);
